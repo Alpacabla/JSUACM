@@ -1,6 +1,6 @@
 /*
-link: 
-tags: 
+link: https://www.acwing.com/problem/content/128/
+tags: greedy or dp
 */
 #include<bits/stdc++.h>
 #define to_l(a) ((a)<<1)
@@ -39,7 +39,7 @@ int main()
 				if(t<0){
 					t=0;
 				}
-				t+=sum[j+i-1][k]-sum[j][k];
+				t+=sum[j+i-1][k]-sum[j-1][k];
 				ans=max(ans,t);
 			}
 		}
