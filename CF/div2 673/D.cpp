@@ -37,17 +37,17 @@ int main()
 			vector<node> ans;
 			ans.clear();
 			for(i=1;i<n;i++){
-				if(num[i]%i!=0){
+				if(num[i]%(i+1)!=0){
 					ans.push_back((node){1,i+1,(i+1-(num[i]%(i+1)))});
 					num[0]-=(i+1-(num[i]%(i+1)));
 					num[i]+=(i+1-(num[i]%(i+1)));
 				}
-				ans.push_back((node){i+1,1,(num[i]/i)});
+				ans.push_back((node){i+1,1,(num[i]/(i+1))});
 				num[0]+=num[i];
 				num[i]=0;
 			}
 			for(i=1;i<n;i++){
-				ans.push_back((node){1,i+1,i+1});
+				ans.push_back((node){1,i+1,ave});
 			}
 			cout<<ans.size()<<endl;
 			for(i=0;i<ans.size();i++){
