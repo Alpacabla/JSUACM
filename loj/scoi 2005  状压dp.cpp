@@ -57,7 +57,6 @@ int main()
 				}
 			}
 		}
-		
 	}
 	for(j=0;j<tot;j++){
 		ans+=dp[n][k][j];
