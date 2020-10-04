@@ -1,6 +1,6 @@
 /*
 link: 
-tags: 
+tags: 其实思路还是挺简单的，就是给我这个傻逼写写得又烂又臭
 */
 #include<bits/stdc++.h>
 #define to_l(a) ((a)<<1)
@@ -18,8 +18,6 @@ int sta[205],len[205];
 void solve(const int n,const int m,int now)
 {
 	deque<int>q;
-	//cout<<n<<" "<<m<<" "<<now<<endl;
-	//memset(vis,false,sizeof(vis));
 	if(sta[now]==4){
 		for(int i=1;i<=n;i++){
 			q.clear();
@@ -37,7 +35,7 @@ void solve(const int n,const int m,int now)
 							q.pop_front();
 						}
 						if(!q.empty()) dp[i][j][now]=max(dp[i][j][now-1],dp[i][q.front()][now-1]+abs(j-q.front()));
-						while(!q.empty()&&dp[i][j][now]>dp[i][q.back()][now-1]+abs(j-q.back())){
+						while(!q.empty()&&dp[i][j][now-1]>dp[i][q.back()][now-1]+abs(j-q.back())){
 							q.pop_back();
 						}
 						q.push_back(j);
@@ -58,12 +56,12 @@ void solve(const int n,const int m,int now)
 						int j;
 						for(j=k;j>=lim;j--){
 							if(book[i][j]) {q.clear();j--;break;}
-							if(vis[i][j]) max(1,lim=j-len[now]);
+							if(vis[i][j]) lim=max(1,j-len[now]);
 							while(!q.empty()&&abs(j-q.front())>len[now]){
 								q.pop_front();
 							}
 							if(!q.empty()) dp[i][j][now]=max(dp[i][j][now-1],dp[i][q.front()][now-1]+abs(j-q.front()));
-							while(!q.empty()&&dp[i][j][now]>dp[i][q.back()][now-1]+abs(j-q.back())){
+							while(!q.empty()&&dp[i][j][now-1]>dp[i][q.back()][now-1]+abs(j-q.back())){
 								q.pop_back();
 							}
 							q.push_back(j);
@@ -87,9 +85,9 @@ void solve(const int n,const int m,int now)
 								while(!q.empty()&&abs(i-q.front())>len[now]){
 									q.pop_front();
 								}
-								if(j==5)cout<<q.front()<<" "<<i<<endl;
+								//if(j==5)cout<<q.front()<<" "<<i<<endl;
 								if(!q.empty()) dp[i][j][now]=max(dp[i][j][now-1],dp[q.front()][j][now-1]+abs(i-q.front()));
-								while(!q.empty()&&dp[i][j][now]>dp[q.back()][j][now-1]+abs(i-q.back())){
+								while(!q.empty()&&dp[i][j][now-1]>dp[q.back()][j][now-1]+abs(i-q.back())){
 									q.pop_back();
 								}
 								q.push_back(i);
@@ -113,7 +111,7 @@ void solve(const int n,const int m,int now)
 									q.pop_front();
 								}
 								if(!q.empty()) dp[i][j][now]=max(dp[i][j][now-1],dp[q.front()][j][now-1]+abs(i-q.front()));
-								while(!q.empty()&&dp[i][j][now]>dp[q.back()][j][now-1]+abs(i-q.back())){
+								while(!q.empty()&&dp[i][j][now-1]>dp[q.back()][j][now-1]+abs(i-q.back())){
 									q.pop_back();
 								}
 								q.push_back(i);
@@ -164,14 +162,6 @@ int main()
 	vis[x][y]=true;
 	for(i=1;i<=k;i++){
 		solve(n,m,i);
-		cout<<i<<endl;
-		for(j=1;j<=n;j++){
-			for(int l=1;l<=m;l++){
-				cout<<setw(3)<<dp[j][l][i]<<" ";
-			}
-			cout<<endl;
-		}
-		cout<<endl;
 	}
 	int max1=-int_inf;
 	for(i=1;i<=n;i++){
