@@ -20,6 +20,7 @@ int main()
 	int i,j;
 	int n;
 	while(cin>>n){
+		if(!n) break;
 		vector<int> cnt(5);
 		for(i=0;i<n;i++){
 			cin>>cnt[i];
