@@ -1,5 +1,5 @@
 /*
-link: 
+link: https://www.acwing.com/problem/content/293/
 tags: dp 记忆化
 */
 #include<bits/stdc++.h>
@@ -74,7 +74,7 @@ int main()
 	cin.tie(0);
 	int i,j,k;
 	int n,m;
-
+	
 	init();
 	
 	while(cin>>n>>m){
