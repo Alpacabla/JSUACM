@@ -1,6 +1,6 @@
 /*
 link: 
-tags: 
+tags: greedy
 */
 #include<bits/stdc++.h>
 #define to_l(a) ((a)<<1)
@@ -12,7 +12,6 @@ typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
 const int max_n=1e5+5;
-bool vis[max_n];
 int main()
 {
 	ios::sync_with_stdio(false);
@@ -25,7 +24,6 @@ int main()
 		cin>>n;
 		string s;
 		cin>>s;
-		memset(vis,0,sizeof(bool)*(n+2));
 		int ans=0;
 		int sum=0;
 		for(int i=0;i<n;i++){
@@ -34,15 +32,18 @@ int main()
 				i++;
 				cnt++;
 			}
+			//cout<<cnt<<endl;
 			if(cnt==1){
 				sum++;
 			}else{
 				if(cnt<=sum){
-					ans+=cnt;
-					sum-=cnt;
+					ans+=(cnt-1);
+					sum-=(cnt-1);
+					sum++;
 				}else{
 					ans+=sum;
 					cnt-=sum;
+					//cout<<cnt<<endl;
 					sum=0;
 					if(cnt==1){
 						sum=1;

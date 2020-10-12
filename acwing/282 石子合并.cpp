@@ -24,7 +24,6 @@ int main()
 	for(i=1;i<=n;i++){
 		cin>>num[i];
 		sum[i]=sum[i-1]+num[i];
-		//dp[i][i]=num[i];
 	}
 	for(i=1;i<=n;i++){
 		for(j=1;j+i<=n;j++){
