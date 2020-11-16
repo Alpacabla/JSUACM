@@ -43,22 +43,18 @@ int main()
 		vector<int>::iterator a,b;
 		int ans=int_inf;
 		if(c1.size()!=0) a=c1.begin(),b=c1.end(),ans=0;
-		//if(c1.size()==0) a=c0.begin(),b=c0.end();
 		for(;a!=b;a++){
-			//cout<<(*a)<<endl;
 			ans+=(*a)-1;
 		}
 		int t=int_inf;
 		if(c0.size()!=0) a=c0.begin(),b=c0.end(),t=0;
 		for(;a!=b;a++){
-			//cout<<(*a)<<endl;
 			t+=(*a)-1;
 		}
 		int out;
 		if(t==int_inf) out=ans;
 		if(ans==int_inf) out=t;
 		if(t!=int_inf&&ans!=int_inf) out=max(ans,t);
-		//ans=max(ans,t);
 		if(c1.size()==0&&c0.size()==0) out=0;
 		cout<<out<<endl;
 	}
