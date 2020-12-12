@@ -1,8 +1,8 @@
 /*
 link: https://www.acwing.com/problem/content/description/221/
 tags: 这题是裸SG函数，但是关键在于题目中的最后一步是胜利所以不符合有向图游戏中sg函数的定义
-	  就不能用sg异或表示此局面多个有向图游戏的结果了，必须回退一步，找到最后的必败态，并且要注意
-	  不能让sg函数访问到1 1的sg
+	  就不能用sg 异或 表示此局面多个有向图游戏的结果了，必须回退一步，找到最后的必败态，并且要注意
+	  不能让sg函数访问到1 1的sg，然后此局面的最终结果是所有情况的sg值取mex
 */
 #include<bits/stdc++.h>
 #define to_l(a) ((a)<<1)
