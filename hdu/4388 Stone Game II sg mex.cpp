@@ -41,94 +41,100 @@ int main()
 	int i,j;
 	int t;
 	int now=1;
-	// memset(sg,-1,sizeof(sg));
-	// // sg[0][0]=sg[0][1]=0;
-	// // sg[1][0]=sg[1][1]=0;
-	// // sg[2][0]=sg[2][1]=0;
-	// sg[0][0]=sg[1][0]=0;
-	// sg[0][1]=sg[1][1]=0;
-	// freopen("4388sggg.txt","w",stdout);
+	// // memset(sg,-1,sizeof(sg));
+	// // // sg[0][0]=sg[0][1]=0;
+	// // // sg[1][0]=sg[1][1]=0;
+	// // // sg[2][0]=sg[2][1]=0;
+	// // sg[0][0]=sg[1][0]=0;
+	// // sg[0][1]=sg[1][1]=0;
+	// // freopen("4388sggg.txt","w",stdout);
+	// // for(int i=1;i<=100;i++){
+	// // 	get_sg(i*10,1);
+	// // 	get_sg(i*10,0);
+	// // 	//cout<<i<<endl;
+	// // }
+	// // cout<<"int sg[2][100001]={";
+	// // cout<<"0";
+	// // for(int i=1;i<=100000;i++){
+	// // 	cout<<","<<sg[0][i];
+	// // }
+	// // cout<<",0";
+	// // for(int i=1;i<=100000;i++){
+	// // 	cout<<","<<sg[1][i];
+	// // }
+	// // cout<<"};"<<endl;
+	// sg[0][0]=1;
+	// //freopen("4388 ==.txt","w",stdout);
+	// //string s="string ss=";
+	// int cnt=0;
+	// //s+='"';
 	// for(int i=1;i<=100;i++){
-	// 	get_sg(i*10,1);
-	// 	get_sg(i*10,0);
-	// 	//cout<<i<<endl;
+	// 	//s+=sg[1][i]+'0';
+	// 	cout<<i<<" ";
+	// 	cout<<sg[0][i]<<" ";
+	// 	cout<<sg[1][i]<<endl;
+	// 	//if(sg[1][i]==2){
+	// 		// if((sg[0][i-lowbit(i)]==0&&sg[0][i+lowbit(i)]==0&&sg[1][i-lowbit(i)]==0&&sg[1][i+lowbit(i)]==0)&&sg[1][i]!=2){
+	// 		// 	cout<<i<<endl;
+	// 		// 	cout<<"no"<<endl;
+	// 		// }
+	// 	//}
+	// 	// if(sg[1][i]==3){
+	// 	// 	cout<<3<<endl;
+	// 	// 	cout<<i<<endl;
+	// 	// }
+	// 	// if(sg[0][i]==1&&sg[1][i]==2){
+	// 	// 	cout<<i<<endl;
+	// 	// 	int k=i;
+	// 	// 	while(k){
+	// 	// 		cout<<k%2;
+	// 	// 		k/=2;
+	// 	// 	}
+	// 	// 	cout<<endl;
+	// 	// }
+	// 	//cout<<endl;
+	// 	// // cout<<sg[1][i]<<endl;
+	// 	// if(sg[0][i]==0&&sg[1][i]!=0){
+	// 	// 	cout<<"s[1]["<<i<<"]=";
+	// 	// }
+	// 	// if(sg[1][i]==3){
+	// 	// 	int k=i;
+	// 	// 	while(k){
+	// 	// 		cout<<k%2;
+	// 	// 		k/=2;
+	// 	// 	}
+	// 	// 	cout<<endl;
+	// 	// }
 	// }
-	// cout<<"int sg[2][100001]={";
-	// cout<<"0";
-	// for(int i=1;i<=100000;i++){
-	// 	cout<<","<<sg[0][i];
-	// }
-	// cout<<",0";
-	// for(int i=1;i<=100000;i++){
-	// 	cout<<","<<sg[1][i];
-	// }
-	// cout<<"};"<<endl;
-	sg[0][0]=1;
-	//freopen("4388 ==.txt","w",stdout);
-	int cnt=0;
-	for(int i=1;i<=100;i++){
-		cout<<i<<" ";
-		cout<<sg[0][i]<<" ";
-		cout<<sg[1][i]<<endl;
-		//if(sg[1][i]==2){
-			if((sg[0][i-lowbit(i)]==0&&sg[0][i+lowbit(i)]==0&&sg[1][i-lowbit(i)]==0&&sg[1][i+lowbit(i)]==0)&&sg[1][i]!=2){
-				cout<<i<<endl;
-				cout<<"no"<<endl;
+	// // s+='"';
+	// // s+=';';
+	// // cout<<s<<endl;
+	// // cout<<3<<";"<<endl;
+	// // cout<<endl;
+	cin>>t;
+	while(t--){
+		int n;
+		//int ans=0;
+		cin>>n;
+		vector<int> num(n);
+		for(int i=0;i<n;i++){
+			cin>>num[i];
+		}
+		bool flag=false;
+		for(int i=0;i<n;i++){
+			int xorsum=0;
+			for(int j=0;j<n;j++){
+				if(j==i) xorsum^=get_sg(num[j],1);
+				else xorsum^=get_sg(num[j],0); 
 			}
-		//}
-		// if(sg[1][i]==3){
-		// 	cout<<3<<endl;
-		// 	cout<<i<<endl;
-		// }
-		// if(sg[0][i]==1&&sg[1][i]==2){
-		// 	cout<<i<<endl;
-		// 	int k=i;
-		// 	while(k){
-		// 		cout<<k%2;
-		// 		k/=2;
-		// 	}
-		// 	cout<<endl;
-		// }
-		//cout<<endl;
-		// // cout<<sg[1][i]<<endl;
-		// if(sg[0][i]==0&&sg[1][i]!=0){
-		// 	cout<<"s[1]["<<i<<"]=";
-		// }
-		// if(sg[1][i]==3){
-		// 	int k=i;
-		// 	while(k){
-		// 		cout<<k%2;
-		// 		k/=2;
-		// 	}
-		// 	cout<<endl;
-		// }
+			if(xorsum){
+				flag=true;
+				break;
+			}
+		}
+		cout<<"Case "<<now++<<": ";
+		if(flag) cout<<"Yes"<<endl;
+		else cout<<"No"<<endl;
 	}
-	// cout<<3<<";"<<endl;
-	// cout<<endl;
-	// cin>>t;
-	// while(t--){
-	// 	int n;
-	// 	//int ans=0;
-	// 	cin>>n;
-	// 	vector<int> num(n);
-	// 	for(int i=0;i<n;i++){
-	// 		cin>>num[i];
-	// 	}
-	// 	bool flag=false;
-	// 	for(int i=0;i<n;i++){
-	// 		int xorsum=0;
-	// 		for(int j=0;j<n;j++){
-	// 			if(j==i) xorsum^=get_sg(num[j],1);
-	// 			else xorsum^=get_sg(num[j],0); 
-	// 		}
-	// 		if(xorsum){
-	// 			flag=true;
-	// 			break;
-	// 		}
-	// 	}
-	// 	cout<<"Case "<<now++<<": ";
-	// 	if(flag) cout<<"Yes"<<endl;
-	// 	else cout<<"No"<<endl;
-	// }
 	return 0;
 }
