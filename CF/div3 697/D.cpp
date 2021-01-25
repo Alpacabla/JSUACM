@@ -12,7 +12,13 @@ typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
 const int max_n=2e5+5;
-ll dp[max_n<<1];
+struct node{
+	int a,b;
+	bool operator < (const node aa) const {
+		return a>aa.a;
+	}
+}a[max_n];
+ll sum2[max_n];
 int main()
 {
 	ios::sync_with_stdio(false);
@@ -24,34 +30,32 @@ int main()
 		int n;
 		ll m;
 		cin>>n>>m;
-		int tot=0;
-		int sum=0;
-		vector<int> a(n+1),b(n+1),ind(n+1);
-		vector<double> v(n+1);
+		vector<node> a1(1),a2(1);
 		for(int i=1;i<=n;i++){
-			cin>>a[i];
-			ind[i]=i;
+			cin>>a[i].a;
 		}
 		for(int i=1;i<=n;i++){
-			cin>>b[i];
-			sum+=b[i];
-			v[i]=a[i]*1.0/b[i];
+			cin>>a[i].b;
+			if(a[i].b==1) a1.push_back(a[i]);
+			else a2.push_back(a[i]);
 		}
-		sort(ind.begin()+1,ind.end(),[b,v](const int aa,const int bb) -> bool {
-			if(v[aa]==v[bb]) return b[aa]<b[bb];
-			else return v[aa]>v[bb];
-		});
-		ll now=0;
-		ll ans=0;
-		for(int i=1;i<=n;i++){
-			now+=a[ind[i]];
-			ans+=b[ind[i]];
-			if(now>=m){
-				break;
+		sort(a1.begin()+1,a1.end());
+		sort(a2.begin()+1,a2.end());
+		sum2[0]=0;
+		for(int i=1;i<a2.size();i++){
+			sum2[i]=sum2[i-1]+a2[i].a;
+		}
+		int ans=int_inf;
+		ll sum1=0;
+		for(int i=0;i<a1.size();i++){
+			sum1+=a1[i].a;
+			int k=int(lower_bound(sum2,sum2+a2.size(),m-sum1)-sum2);
+			if(k!=a2.size()){
+				ans=min(ans,i+2*k);
 			}
 		}
-		if(now>=m) cout<<ans<<endl;
-		else cout<<-1<<endl;
+		if(ans==int_inf) cout<<-1<<endl;
+		else cout<<ans<<endl; 
 	}
 	return 0;
 }
