@@ -1,6 +1,7 @@
 /*
 link: 
-tags: 
+tags: 细节有点多，但是其实并不难呜呜呜。只要存在一个
+      唯一的对称最高山峰就行了，并且高度得是奇数
 */
 #include<bits/stdc++.h>
 #define to_l(a) ((a)<<1)
@@ -24,48 +25,37 @@ int main()
 		scanf("%d",&a[i]);
 	}
 	int max1=-1;
+	int max2=-1;
 	for(int i=2;i<=n;i++){
 		if(a[i]>a[i-1]){
 			dp1[i]=dp1[i-1]+1;
 		}
 	}
+	int ind=-1;
 	for(int i=n-1;i>=1;i--){
 		if(a[i]>a[i+1]){
 			dp2[i]=dp2[i+1]+1;
 		}
-		if(dp2[i]!=dp1[i]&&!((max(dp2[i],dp1[i])==2)&&min(dp2[i],dp1[i])==1)){
+		if(dp2[i]==dp1[i]){
+			if(max1<dp2[i]){
+				max1=dp2[i];
+				ind=i;
+			}
+		}else{
+			max2=max(max2,dp2[i]);
 			dp1[i]=0;
-			continue;
 		}
-		dp1[i]=min(dp1[i],dp2[i]);
-		max1=max(max1,dp1[i]);
 	}
-	int max2=-1;
+	memset(dp2,0,sizeof(int)*(n+3));
 	for(int i=2;i<=n;i++){
-		if(a[i]<a[i-1]){
-			dp11[i]=dp11[i-1]+1;
+		if(a[i]>a[i-1]){
+			dp2[i]=dp2[i-1]+1;
+		}
+		if(ind!=i){
+			max2=max(max2,dp2[i]);
 		}
 	}
-	set<int> sets;
-	for(int i=n-1;i>=1;i--){
-		if(a[i]<a[i+1]){
-			dp22[i]=dp22[i+1]+1;
-		}
-		dp11[i]=max(dp11[i],dp22[i]);
-		max2=max(max1,dp11[i]);
-		//cout<<dp11[i]<<endl;
-		sets.insert(dp11[i]);
-	}
-	int ans=0;
-	for(int i=1;i<=n;i++){
-		int k=dp1[i];
-		if(k%2==1) continue;
-		auto x=sets.upper_bound(k+1);
-		if(x==sets.end()){
-			//cout<<i<<endl;
-			ans++;
-		}
-	}
-	cout<<ans<<endl;
+	if(max1%2==0&&max1&&max1>max2) cout<<1<<endl;
+	else cout<<0<<endl;
 	return 0;
 }
