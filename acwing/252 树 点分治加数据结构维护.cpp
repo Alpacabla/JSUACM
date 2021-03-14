@@ -143,6 +143,7 @@ int dfz(int a)
 	vis[cen]=true;
 	sum=0;
 	cnt1=0;
+	getsize(cen,-1);
 	solve(cen);
 	res+=sum;
 	for(int i=head[cen];i;i=nxt[i]){
