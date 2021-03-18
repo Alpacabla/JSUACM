@@ -35,7 +35,6 @@ void dfs(int a,int fa)
 			dep[a]=max(dep[a],dep[u]);
 		}
 	}
-	//if(!flag) 
 	dep[a]+=1;
 	max1=0;
 	max2=0;
