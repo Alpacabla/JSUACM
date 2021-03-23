@@ -26,10 +26,6 @@ ll cnt[max_n];
 ll res;
 void update(int l1,int r1,int l2,int r2,int ind)
 {
-	while(l1<l2){
-		ll y=--cnt[col[l1++]];
-		res-=(y<<1)|1;
-	}
 	while(l1>l2){
 		ll y=cnt[col[--l1]]++;
 		res+=(y<<1)|1;;
@@ -37,6 +33,10 @@ void update(int l1,int r1,int l2,int r2,int ind)
 	while(r1<r2){
 		ll y=cnt[col[++r1]]++;
 		res+=(y<<1)|1;
+	}
+	while(l1<l2){
+		ll y=--cnt[col[l1++]];
+		res-=(y<<1)|1;
 	}
 	while(r1>r2){
 		ll y=--cnt[col[r1--]];

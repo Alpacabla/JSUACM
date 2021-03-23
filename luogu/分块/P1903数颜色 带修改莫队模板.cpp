@@ -52,14 +52,14 @@ inline void change(int ind,int &color,int l,int r)
 }
 void update(int l1,int r1,int l2,int r2,int ind,int last,int ti)
 {
-	while(l1<l2){
-		del(l1++);
-	}
 	while(l1>l2){
 		add(--l1);
 	}
 	while(r1<r2){
 		add(++r1);
+	}
+	while(l1<l2){
+		del(l1++);
 	}
 	while(r1>r2){
 		del(r1--);
