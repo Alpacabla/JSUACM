@@ -12,28 +12,25 @@ typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
 const int max_n=1e5+5;
+stack<int> sta;
 int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	int i,j;
-	int t;
-	cin>>t;
-	while(t--){
-		int n;
-		map<int,int> mp;
-		int max1=-1;
-		cin>>n;
-		for(int i=0;i<n;i++){
-			int a;
-			cin>>a;
-			max1=max(max1,++mp[a]);
-		}
-		if(max1<=n-max1){
-			cout<<(n-max1-max1)%2<<endl;
+	int n;
+	cin>>n;
+	vector<int> a(n+1);
+	//sta.push(1e9+10);
+	for(int i=1;i<=n;i++){
+		cin>>a[i];
+		if(sta.size()&&a[i]<sta.top()){
+			sta.push(a[i]);
 		}else{
-			cout<<max1-(n-max1)<<endl;
+			while(sta.size()&&sta.top()<=a[i]) sta.pop();
+			sta.push(a[i]);
 		}
 	}
+	cout<<sta.size()<<endl;
 	return 0;
 }

@@ -17,23 +17,14 @@ int main()
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	int i,j;
-	int t;
-	cin>>t;
-	while(t--){
-		int n;
-		map<int,int> mp;
-		int max1=-1;
-		cin>>n;
-		for(int i=0;i<n;i++){
-			int a;
-			cin>>a;
-			max1=max(max1,++mp[a]);
-		}
-		if(max1<=n-max1){
-			cout<<(n-max1-max1)%2<<endl;
-		}else{
-			cout<<max1-(n-max1)<<endl;
-		}
+	ll n;
+	ll dp[105];
+	dp[0]=1;
+	dp[1]=1;
+	for(int i=2;i<100;i++){
+		dp[i]=dp[i-1]+dp[i-2];
 	}
+	cin>>n;
+	cout<<(int)(upper_bound(dp,dp+92,n)-dp)<<endl;
 	return 0;
 }
