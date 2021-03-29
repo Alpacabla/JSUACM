@@ -12,43 +12,53 @@ typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
 const int max_n=1e5+5;
+#define int ll
 ll cnt[5];
 vector<ll> dp[5];
-int main()
+int a[5];
+signed main()
 {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
-	int a[5];
+	// ios::sync_with_stdio(false);
+	// cin.tie(0);
 	int n;
 	for(int i=1;i<=4;i++){
-		cin>>a[i];
+		scanf("%lld",&a[i]);
 	}
-	cin>>n;
+	scanf("%lld",&n);
 	for(int i=1;i<=n;i++){
 		int m;
 		for(int j=1;j<=4;j++){
-			cin>>cnt[j];
+			scanf("%lld",&cnt[j]);
+			//cin>>cnt[j];
 		}
-		cin>>m;
-		for(int i=0;i<=4;i++){
-			dp[i].resize(m+1);
-			dp[i][0]=1;
+		scanf("%lld",&m);
+		for(int j=0;j<=4;j++){
+			dp[j].resize(m+5);
 		}
-		//cout<<dp[0][0]<<endl;
+		dp[0][0]=1;
 		for(int j=1;j<=4;j++){
-			ll max1=-1;
-			for(int k=a[j];k<=m;k++){
-				//cout<<k<<endl;
-				if(k>=(a[j]*(cnt[j]+1))){
-					dp[j][k]+=max1;//dp[j-1][k]+dp[j-1][k-a[j]*cnt[j]];//-dp[j-1][k-a[j]*cnt[j]];
-				}else{
-					max1=max(max1,dp[j][k]+=dp[j][k-a[j]]+dp[j-1][k]);
+			for(int d=0;d<a[j];d++){
+				ll sum=0;
+				int k;
+				for(k=0;k<=cnt[j]&&d+k*a[j]<=m;k++){
+					sum+=dp[j-1][d+k*a[j]];
+					dp[j][d+k*a[j]]+=sum;
 				}
-				cout<<dp[j][k]<<" ";
+				for(;d+k*a[j]<=m;k++){
+					sum-=dp[j-1][d+(k-cnt[j]-1)*a[j]];
+					sum+=dp[j-1][d+k*a[j]];
+					dp[j][d+k*a[j]]+=sum;
+				}
 			}
-			cout<<endl;
+			// for(int d=0;d<=m;d++){
+			// 	cout<<dp[j][d]<<" ";
+			// }
+			// cout<<endl;
 		}
-		cout<<dp[4][m]<<endl;
+		printf("%lld\n",dp[4][m]);
+		for(int i=1;i<=4;i++){
+			dp[i].clear();
+		}
 	}
 	return 0;
 }
