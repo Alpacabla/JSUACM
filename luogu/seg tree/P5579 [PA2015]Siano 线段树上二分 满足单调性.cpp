@@ -1,6 +1,6 @@
 /*
 link: https://www.luogu.com.cn/problem/P5579
-tags: 二分线段树，线段树实在是太弱了，因为是单调的所以可以线段树上二分查找。芜湖
+tags: 二分线段树，我的线段树水平实在是太弱了，因为是单调的所以可以线段树上二分查找。芜湖
 */
 #include<bits/stdc++.h>
 #define to_l(a) ((a)<<1)
