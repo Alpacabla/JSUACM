@@ -78,11 +78,15 @@ int main()
 		for(int i=1;i<now;i++){
             for(int j=birth[i].T;j>=0;j--){
 				//int temp=dp[j][0];
-				for(int k=min(i,m);k>=0;k--){
-					if(j>=birth[i].c&&birth[i].T>=birth[i].c) dp[j][k]=max(dp[j][k],dp[j-birth[i].c][k]+birth[i].v);
-					dp[j][k]=max(dp[j][k],dp[j][0]+MAX[k]);
-					ans=max(ans,dp[j][k]);
+				for(int k=m;k>=0;k--){
+					if(j>=birth[i].c/*&&birth[i].T>=birth[i].c*/) dp[j][k]=max(dp[j][k],dp[j-birth[i].c][k]+birth[i].v);
+					if(k) dp[j][k]=max(dp[j][k],dp[j][k-1]);
 				}
+			}
+		}
+		for(int i=0;i<=365;i++){
+			for(int j=0;j<=m;j++){
+				ans=max(ans,dp[i][j]+MAX[j]);
 			}
 		}
 		printf("%d\n",ans);

@@ -17,17 +17,6 @@ int nn;
 int tree[max_n],lson[(max_n<<6)],rson[(max_n<<6)];
 int tot;
 ll sum[(max_n<<6)];
-int build(int l,int r)
-{
-	int now=++tot;
-	if(l==r){
-		return now;
-	}
-	int mid=(l+r)>>1;
-	lson[now]=build(l,mid);
-	rson[now]=build(mid+1,r);
-	return now;
-}
 int update(int last,int l,int r,int val)
 {
 	int now=++tot;
@@ -48,7 +37,7 @@ void init(int n)
 	memcpy(b,a,sizeof(int)*(n+1));
 	sort(b+1,b+1+n);
 	nn=unique(b+1,b+1+n)-b-1;
-	tree[0]=build(1,nn);
+	tree[0]=++now;
 	for(int i=1;i<=n;i++){
 		tree[i]=update(tree[i-1],1,nn,lower_bound(b+1,b+1+nn,a[i])-b);
 	}
