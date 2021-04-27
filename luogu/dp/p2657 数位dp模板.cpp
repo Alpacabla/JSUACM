@@ -19,8 +19,8 @@ void init(int a,int b)
 	// for(int i=0;i<10;i++){
 	// 	dp[0][i]=1;
 	// }
-	//n1.push_back(-1);
-	//n2.push_back(-1);
+	// n1.push_back(-1);
+	// n2.push_back(-1);
 	while(a){
 		n1.push_back(a%10);
 		a/=10;
