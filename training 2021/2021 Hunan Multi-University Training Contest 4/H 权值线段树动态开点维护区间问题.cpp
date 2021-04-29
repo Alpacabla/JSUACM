@@ -1,3 +1,9 @@
+/*
+link: https://vjudge.net/contest/433955#problem/H
+tags: 如标题，但是看别的学校的代码有一个非常好写的维护是
+      维护这个点和下个点是否不一样，然后修改的时候就修改
+      两个点，查询就查询整个区间的和是否等于区间长度。
+*/
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long
@@ -11,8 +17,8 @@ inline void maintain(int l,int mid,int r,int ind)
 {
     lval[ind]=lval[lson[ind]];
     rval[ind]=rval[rson[ind]];
-    if((mid-l+1==1||r-mid+1==1)||(flag[lson[ind]]&&flag[rson[ind]])){
-    	flag[ind]=rval[lson[ind]]==!lval[rson[ind]];
+    if((mid-l+1==1&&flag[rson[ind]])||(r-mid==1&&flag[lson[ind]])||(flag[lson[ind]]&&flag[rson[ind]])){
+    	flag[ind]=(rval[lson[ind]]==!lval[rson[ind]]);
     }else{
     	flag[ind]=false;
     }
@@ -43,6 +49,7 @@ void query(int ind,int l1,int r1,int l=1,int r=lim)
 	if(l>r1||r<l1) return ;
 	if(r<=r1&&l>=l1){
 		if(!ind){
+            //cout<<'x'<<endl;
 			if(l!=r){
 				ans=false;
 			}
@@ -53,8 +60,11 @@ void query(int ind,int l1,int r1,int l=1,int r=lim)
 					ans=false;
 				}
 			}
-			last=rval[ind];
+			last=0;
 		}else{
+            // cout<<l<<" "<<r<<endl;
+            // cout<<flag[ind]<<endl;
+            // cout<<"u"<<endl;
 			if(!flag[ind]){
 				ans=false;
 			}
