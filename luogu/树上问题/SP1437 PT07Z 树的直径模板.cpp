@@ -11,7 +11,7 @@ typedef long long int ll;
 typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
-const int max_n=1e4+5;
+const int max_n=1e5+5;
 int head[max_n],to[max_n<<1],nxt[max_n<<1];
 int tot;
 inline void add(int a,int b)
