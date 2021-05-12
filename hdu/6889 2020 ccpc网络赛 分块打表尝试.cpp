@@ -12,14 +12,15 @@ typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
 const int max_n=1e5+5;
-const int sqn=1e5;
+const int sqn=1e7;
 const ll lim=1e10;
-#define TEST 20
+#define TEST 5
+ll r[]={2,3,5,7,11};
 ll sum[max_n];
 int tot;
-ll qpow(ll a,int b,ll mod)
+__int128 qpow(__int128 a,__int128 b,__int128 mod)
 {
-	ll res=1;
+	__int128 res=1;
 	while(b){
 		if(b&1) res=res*a%mod;
 		a=a*a%mod;
@@ -31,11 +32,12 @@ bool is_prime(ll num)
 {
 	if(num<=2||num%2==0) return num==2;
 	int cnt=0;
-	ll mod=num;
+	__int128 mod=num;
 	num-=1;
 	while(num%2==0) num/=2,cnt++;
 	for(int i=0;i<TEST;i++){
-		ll a=rand()%(mod-1)+1;
+		__int128 a=r[i];
+		if(mod==r[i]) return true;
 		a=qpow(a,num,mod);
 		if(a==1||a==mod-1) continue;
 		int j=0;
@@ -55,7 +57,9 @@ void init()
 			now+=i;
 		}
 		if(i%sqn==0){
+
 			sum[++tot]=now;
+			cout<<i/sqn<<endl;
 		}
 	}
 	return ;
@@ -66,10 +70,10 @@ int main()
 	cin.tie(0);
 	srand(time(0));
 	int t;
+	init();
 	freopen("test.out","w",stdout);
 	cout<<"ll sum[]={0";
-	init();
-	for(int i=1;i<=sqn;i++){
+	for(int i=1;i<=lim/sqn;i++){
 		cout<<","<<sum[i];
 		if(i%(sqn/10)==0) cout<<endl;
 	}
