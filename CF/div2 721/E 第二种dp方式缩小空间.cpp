@@ -17,7 +17,7 @@ typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
 const int max_n=3.5e4+5;
-int max1[101][max_n<<2],add1[101][max_n<<2];
+int max1[max_n<<2],add1[max_n<<2];
 inline void maintain(int *max1,int *add1,int ind,int l,int r)
 {
 	max1[ind]=min(max1[to_l(ind)],max1[to_r(ind)]);
@@ -50,6 +50,7 @@ int query(int *max1,int *add1,int ind,int l,int r,int l1,int r1,int res=0)
 	query(max1,add1,to_r(ind),l,r,mid+1,r1,res));
 }
 int last[max_n];
+int dp[max_n];
 int main()
 {
 	ios::sync_with_stdio(false);
@@ -63,20 +64,28 @@ int main()
 	int ans=0;
 	int sum=0;
 	for(int i=1;i<=n;i++){
-		if(last[a[i]]==0) {
-			last[a[i]]=i;
-			if(i==1) continue;
-		}
+		if(last[a[i]]==0) last[a[i]]=i;
 		sum+=i-last[a[i]];
-		add(max1[1],add1[1],sum,1,i,i,1,n);
-		for(int j=min(i,k);j>=2;j--){
-			add(max1[j-1],add1[j-1],i-last[a[i]],1,1,last[a[i]]-1,1,n);
-			int kk=query(max1[j-1],add1[j-1],1,1,i-1,1,n);
-			if(j==k) ans=kk;
-			add(max1[j],add1[j],+kk,1,i,i,1,n);
-		}
+		dp[i]=sum;
 		last[a[i]]=i;
 	}
-	cout<<query(max1[k],add1[k],1,n,n,1,n)<<endl;
+	
+	for(int j=2;j<=k;j++){
+		memset(max1,0,sizeof(max1));
+		memset(add1,0,sizeof(add1));
+		memset(last,0,sizeof(last));
+		for(int i=1;i<j;i++) last[a[i]]=i;
+		for(int i=j;i<=n;i++){
+			if(last[a[i]]==0){
+				last[a[i]]=i;
+			}
+			add(max1,add1,i-last[a[i]],1,1,(last[a[i]]-1==0?1:last[a[i]]-1),1,n);
+			int k=query(max1,add1,1,1,(i-1==0?1:i-1),1,n);
+			add(max1,add1,dp[i],1,i,i,1,n);
+			dp[i]=k;
+			last[a[i]]=i;
+		}
+	}
+	cout<<dp[n]<<endl;
 	return 0;
 }
