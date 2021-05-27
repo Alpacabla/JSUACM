@@ -5,7 +5,7 @@
 // Time Limit: 3000 ms
 // 
 // Powered by CP Editor (https://cpeditor.org)
-
+//#pragma GCC optimize("no-stack-protector,fast-math")
 #include<bits/stdc++.h>
 #define to_l(a) ((a)<<1)
 #define to_r(a) ((a)<<1|1)
@@ -15,7 +15,7 @@ typedef long long int ll;
 typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
-const int max_n=3e5+5;
+const int max_n=3e6+5;
 int head[max_n],to[max_n<<1],nxt[max_n<<1],tot=1,head1[max_n];
 inline void add(int *head,int a,int b){
 	to[++tot]=b;
@@ -44,7 +44,10 @@ int addnode(int a)
 	int &in=dfn[a].first,&out=dfn[a].second;
 	auto k=sets.upper_bound(dfn[a]);
 	bool flag=true;
-	if(k==sets.end()||!(k->first<=in&&k->second>=out)) k=prev(k);
+	if(k==sets.end()||!(k->first<=in&&k->second>=out)){
+		if(k!=sets.end()&&(in<=k->first&&k->second<=out)) return 0;
+		k=prev(k);
+	} 
 	if(k->first<=in&&k->second>=out){
 		last[a]=*k;
 		sets.erase(k);
