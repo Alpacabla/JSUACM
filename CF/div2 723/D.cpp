@@ -29,37 +29,20 @@ void add(int x)
 int query(int x)
 {
 	int res=0;
-	while(x<=n){
+	while(x<=4){
 		res+=bit[x];
 		x+=lowbit(x);
 	}
 	return res;
 }
-ll solve(string s1,string s2)
+ll solve(int *a,string s)
 {
+	for(int i=1;i<=4;i++) bit[i]=0;
 	ll res=0;
-	queue<int> q[4];
-	vector<int> a(s1.size());
-	int tot=1;
-	a[0]=tot;
-	for(int i=1;i<s1.size();i++){
-		while(i<s1.size()&&s1[i]==s1[i-1]){
-			a[i]=tot;
-			i++;
-		}
-		if(i>=s1.size()) break;
-		a[i]=++tot;
-	}
-	for(int i=0;i<s1.size();i++){
-		q[k[s1[i]]].push(a[i]);
-	}
-	n=tot;
-	memset(bit,0,sizeof(int)*(tot+3));
-	for(int i=0;i<s2.size();i++){
-		int t=q[k[s2[i]]].front();
-		q[k[s2[i]]].pop();
+	for(int i=0;i<s.size();i++){
+		int t=a[k[s[i]]];
 		add(t);
-		res+=query(t+1);	
+		res+=query(t+1);
 	}
 	return res;
 }
@@ -77,8 +60,7 @@ int main()
 	ch[1]='N';
 	ch[2]='T';
 	ch[3]='O';
-	// cout<<solve("NAAN","AANN")<<endl;
-	// cout<<solve("OAANTTON","TNNTAOOA")<<endl;
+	
 	cin>>t;
 	
 	while(t--){
@@ -89,30 +71,26 @@ int main()
 		for(int i=0;i<s.size();i++){
 			cnt[k[s[i]]]++;
 		}
+		string ss[4];
+		int a[4]={0,1,2,3};
+		
 		for(int i=0;i<4;i++){
-			for(int j=0;j<4;j++){
-				for(int k=0;k<4;k++){
-					for(int l=0;l<4;l++){
-						if(i!=j&&i!=k&&i!=l&&j!=k&&j!=l&&k!=l){
-							string s1="";
-							int a[4]={i,j,k,l};
-							//cout<<i<<" "<<j<<" "<<k<<" "<<l<<endl;
-							for(int o=0;o<4;o++){
-								for(int c=0;c<cnt[a[o]];c++){
-									s1+=ch[a[o]];
-								}
-							}
-							ll res=solve(s,s1);
-							if(res>min1){
-								min1=res;
-								ans=s1;
-							}
-						}
+			ss[i]=string(cnt[i],ch[i]);
+		}
+		do{
+			ll res=solve(a,s);
+			if(res>min1){
+				string s1="";
+				for(int i=0;i<4;i++){
+					for(int j=0;j<4;j++){
+						if(a[k[ch[j]]]==i) s1+=ss[j];
 					}
 				}
+				min1=res;
+				ans=s1;
 			}
-		}
-		cout<<ans<<endl;
+		}while(next_permutation(a,a+4));
+		cout<<ans<<'\n';
 	}
 	return 0;
 }
