@@ -6,7 +6,7 @@
 // 
 // Powered by CP Editor (https://cpeditor.org)
 
-#include<bits/stdc++.h>
+#include<cstdio>
 #define to_l(a) ((a)<<1)
 #define to_r(a) ((a)<<1|1)
 #define lowbit(a) ((a)&(-a))
@@ -19,25 +19,24 @@ const int max_n=1e5+5;
 double dp[1005][1005];
 int main()
 {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
+	// ios::sync_with_stdio(false);
+	// cin.tie(0);
 	int n,s;
-	cin>>n>>s;
-	dp[0][0]=0;
-	for(int i=0;i<=n;i++){
-		for(int j=0;j<=s;j++){
-			if(i==0&&j==0) continue;
-			//double b=(1-1.0*i/n*j/s);
-			double b;
-			if(i==n&&j==s){
-				b=1;
-			}else b=(1-1.0*i/n*j/s);
-			dp[i][j]=1/b;
-			if(i>=1) dp[i][j]+=dp[i-1][j]*j/s*(n-i+1)/n/b;
-			if(j>=1) dp[i][j]+=dp[i][j-1]*i/n*(s-j+1)/s/b;
-			if(i>=1&&j>=1) dp[i][j]+=dp[i-1][j]*(s-j+1)/s*(n-i+1)/n/b;
+	scanf("%d%d",&n,&s);
+	dp[n][s]=0;
+	for(int i=n;i>=0;i--){
+		for(int j=s;j>=0;j--){
+			double _p1;
+			if(i==n&&j==s) continue;
+			//if(i==0&&j==0) _p1=1;
+			_p1=(1-(1.0*i*j/n/s));
+			dp[i][j]=1/_p1;
+			if(j+1<=s) dp[i][j]+=1.0*dp[i][j+1]*i/n*(s-j)/s/_p1;
+			if(i+1<=n) dp[i][j]+=1.0*dp[i+1][j]*(n-i)/n*j/s/_p1;
+			if(i+1<=n&&j+1<=s) dp[i][j]+=1.0*dp[i+1][j+1]*(n-i)/n*(s-j)/s/_p1;
 		}
 	}
-	cout<<dp[n][s]<<endl;
+	printf("%.4lf\n",dp[0][0]);
+	//cout<<dp[0][0]<<endl;
 	return 0;
 }
