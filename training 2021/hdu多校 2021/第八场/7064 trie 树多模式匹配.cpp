@@ -72,7 +72,6 @@ int main()
 {
 	int t;
 	scanf("%d",&t);
-	//tot=max_n-5;
 	while(t--){
 		init();
 		scanf("%s",s);
