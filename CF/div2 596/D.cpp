@@ -10,47 +10,47 @@
 #define to_l(a) ((a)<<1)
 #define to_r(a) ((a)<<1|1)
 #define lowbit(a) ((a)&(-a))
-//#define endl '\n'
+#define endl '\n'
 using namespace std;
 typedef long long int ll;
 typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
 const int max_n=1e5+5;
+vector<pair<int,int> > fac[max_n];
+bool vis[max_n];
 int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	int n,k;
 	cin>>n>>k;
-	vector<int> vis(1e5+1);
+	vector<int> a(n+1);
+	
+	for(int i=2;i<=1e5;i++){
+		if(!vis[i]){
+			for(int j=i;j<=1e5;j+=i){
+				vis[j]=true;
+				int v=j;
+				int cnt=0;
+				while(v%i==0){
+					v/=i;
+					cnt++;
+				}
+				if((cnt%=k)!=0) fac[j].push_back({i,cnt});
+			}
+		}
+	}
+	ll ans=0;
+	map<vector<pair<int,int> >,int> mp;
 	for(int i=1;i<=n;i++){
 		int a;
 		cin>>a;
-		vis[a]++;
-	}
-	vector<ll> v;
-	for(int i=1;i<=1e5;i++){
-		ll x=1;
-		for(int j=1;j<=k&&x<=1e10;j++){
-			x*=i;
-		}
-		if(x>1e10) break;
-		v.push_back(x);
-	}
-	ll ans=0;
-	for(int i=1;i<=1e3;i++){
-		//if(vis[i]){
-			ll l=i*i,r=i*1e5;
-			int k1=(int)(lower_bound(v.begin(),v.end(),l)-v.begin());
-			int k2=(int)(upper_bound(v.begin(),v.end(),r)-v.begin());
-			cout<<k1<<" "<<k2<<endl;
-			for(int j=k1;j<k2;j++){
-				if(v[j]%i==0){
-					ans+=(v[j]/i==i?(1ll+vis[i]-1)*(vis[i]-1)/2:vis[i]*vis[v[j]/i]);
-				}
-			}
-		//}
+		vector<pair<int,int> > vv; 
+		vv=fac[a];
+		for(int i=0;i<vv.size();i++) vv[i].second=k-vv[i].second;
+		ans+=mp[vv];
+		mp[fac[a]]++;
 	}
 	cout<<ans<<endl;
 	return 0;
