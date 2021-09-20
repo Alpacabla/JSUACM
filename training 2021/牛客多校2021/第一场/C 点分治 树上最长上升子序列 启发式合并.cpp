@@ -34,19 +34,29 @@ bool vis[max_n];
 int siz[max_n];
 int minsiz=int_inf;
 int cen;
-void dfs(int a,int fa)
+void dfs1(int a,int fa)
 {
 	siz[a]=1;
+	for(int i=head[a];i;i=nxt[i]){
+		int &u=to[i];
+		if(u!=fa&&!vis[u]){
+			dfs1(u,a);
+			siz[a]+=siz[u];
+		}
+	}
+	return ;
+}
+void dfs2(int a,int fa,int sizsiz)
+{
 	int maxsiz=0;
 	for(int i=head[a];i;i=nxt[i]){
 		int &u=to[i];
 		if(u!=fa&&!vis[u]){
-			dfs(u,a);
-			siz[a]+=siz[u];
+			dfs2(u,a,sizsiz);
 			maxsiz=max(maxsiz,siz[u]);
 		}
 	}
-	maxsiz=max(maxsiz,siz[fa]);
+	maxsiz=max(maxsiz,sizsiz-siz[a]);
 	if(maxsiz<minsiz){
 		minsiz=maxsiz;
 		cen=a;
@@ -102,21 +112,21 @@ void getdp(int a,int fa)
 	}
 	ins(f[a],val[a]);
 	ins(g[a],-val[a]);
-	res=max({res,int(g[a].size()),int(f[a].size())});
-	vv=max(vv,res);
+	vv=max({vv,res,int(g[a].size()),int(f[a].size())});
 	return ;
 }
 void dfz(int a)
 {
 	minsiz=int_inf;
-	dfs(a,0);
-	if(cen==a) return ;
+	dfs1(a,0);
+	dfs2(a,0,siz[a]);
+	if(vis[cen]) return ;
 	int res=0;
 	int toto=0;
 	int vvv=0;
 	for(int i=head[cen];i;i=nxt[i]){
 		int &u=to[i];
-		// if(!vis[u]){
+		//if(!vis[u]){  不需要vis这里
 			vv=0;
 			getdp(u,cen);
 			if(vvv<vv){
@@ -125,10 +135,9 @@ void dfz(int a)
 			}
 		//}
 	}
-	// cout<<"ok"<<endl;
-	// cout<<cen<<endl;
-	// cout<<vvv<<endl;
-	ans=min(ans,vvv);
+    assert(toto!=0);
+    ans=min(ans,vvv);
+	if(vis[toto]) return ;
 	vis[cen]=true;
 	dfz(toto);
 	return ;
@@ -149,5 +158,6 @@ int main()
 	
 	dfz(1);
 	cout<<ans<<endl;
+    assert(ans!=0);
 	return 0;
 }
