@@ -18,21 +18,33 @@ const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
 const int max_n=1e6+5;
 int pow2[max_n];
-const int mod=998244353 ;
+const int mod=998244353;
 int cnt1[max_n],cnt2[max_n],cnt3[max_n],cnt4[max_n];
-map<pair<int,int> >mp;
-
+int cntcnt,cntcntcnt;
+map<pair<int,int>,int>mp;
 int k1,k2;
+int flag1,flag2;
+int none;
 
-void del(int *cnt,int x,int &kk){
+void del(int *cnt,int *cnt1,int x,int &kk,int &flag,int &v){
 	if(--cnt[x]==0){
-		kk++;
+		v--;
+		if(cnt1[x]){
+			flag--;
+		}else{
+			kk++;	
+		}
 	}
 	return ;
 }
-void add(int *cnt,int x,int &kk){
+void add(int *cnt,int *cnt1,int x,int &kk,int &flag,int &v){
 	if(cnt[x]++==0){
-		kk--;
+		v++;
+		if(cnt1[x]){
+			flag++;
+		}else{
+			kk--;
+		}
 	}
 	return ;
 }
@@ -41,23 +53,30 @@ int main()
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	int n,m,k;
-	cin>>n>>k>>k;
+	cin>>n>>m>>k;
 	pow2[0]=1;
 	for(int i=1;i<max_n;i++){
 		pow2[i]=pow2[i-1]*2%mod;
 	}
+	k1=n,k2=m;
 	int ans=0;
-	int cnt1=0,cnt2=0,cnt3=0,cnt4=0;
+	int vv=0;
+	int sta[4][2]={
+		1,0,
+		0,1,
+		-1,0,
+		0,-1
+	};
 	for(int i=1;i<=k;i++){
 		int x,y,z;
 		cin>>x>>y>>z;
 		if(z==-1){
 			if(mp.count({x,y})){
 				int v=mp[{x,y}];
-				if(x%2==v) del(cnt1,x,k1);
-				else del(cnt2,x,k1);
-				if(y%2==v) del(cnt3,y,k2);
-				else del(cnt3,x,k2);
+				if(y%2==v) del(cnt1,cnt2,x,k1,flag1,x%2?cntcnt:cntcntcnt);
+				else del(cnt2,cnt1,x,k1,flag1,!(x%2)?cntcnt:cntcntcnt);
+				if(x%2==v) del(cnt3,cnt4,y,k2,flag2,none);
+				else del(cnt4,cnt3,y,k2,flag2,none);
 				mp.erase({x,y});
 			}
 			
@@ -65,27 +84,45 @@ int main()
 			//if(z==1){
 			if(mp.count({x,y})){
 				int v=mp[{x,y}];
-				if(x%2==v) del(cnt1,x,k1);
-				else del(cnt2,x,k1);
-				if(y%2==v) del(cnt3,y,k2);
-				else del(cnt3,x,k2);
+				if(y%2==v) del(cnt1,cnt2,x,k1,flag1,x%2?cntcnt:cntcntcnt);
+				else del(cnt2,cnt1,x,k1,flag1,!(x%2)?cntcnt:cntcntcnt);
+				if(x%2==v) del(cnt3,cnt4,y,k2,flag2,none);
+				else del(cnt4,cnt3,y,k2,flag2,none);
 				mp.erase({x,y});
 			}
 			mp[{x,y}]=z;
-			if(x%2==z) add(cnt1,x,k1);
-			else add(cnt2,x,k1);
-			if(y%2==z) add(cnt3,y,k2);
-			else add(cnt3,x,k2);
+			if(y%2==z) {add(cnt1,cnt2,x,k1,flag1,x%2?cntcnt:cntcntcnt);}
+			else {add(cnt2,cnt1,x,k1,flag1,!(x%2)?cntcnt:cntcntcnt);}
+			if(x%2==z) add(cnt3,cnt4,y,k2,flag2,none);
+			else add(cnt4,cnt3,y,k2,flag2,none);
 			//}else{
 				
 			//}
 		}
-		if((cnt1&&cnt2)&&(cnt3&&cnt4)){
-			ans=0;
-		}else{
-			
+		if(flag1&&flag2) cout<<0<<endl;
+		else{
+			if(k1==n&&k2==m){
+				cout<<(pow2[k1]+pow2[k2]-2)%mod<<endl;
+			}else{
+				int ans=0;
+				if(!flag1) ans=pow2[k1];
+				if(!flag2) ans=(ans+pow2[k2])%mod;
+				if(!flag1&&!flag2&&!(cntcnt&&cntcntcnt)) ans=(ans-1+mod)%mod;
+				cout<<ans<<endl;
+			}
 		}
 		
 	}
 	return 0;
 }
+
+/*
+0 1 
+    0 
+    
+0 1 0
+0 1 0
+
+0 1 1
+1 0 0
+*/
