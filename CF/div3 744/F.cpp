@@ -21,6 +21,55 @@ int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	
+	int t;
+	cin>>t;
+	while(t--){
+		int n,d;
+		cin>>n>>d;
+		vector<int> a(n),vis(n);
+		for(int i=0;i<n;i++){
+			cin>>a[i];
+		}
+		bool flagflag=true;
+		int ans=0;
+		for(int i=0;i<n;i++){
+			if(!vis[i]){
+				int j=i;
+				vector<int> val(1,0);
+				int last=0;
+				bool flag=false;
+				while(!vis[j]){
+					if(!a[j]) flag=true; 
+					val.push_back(a[j]);
+					vis[j]=true;
+					j+=d;
+					j%=n;
+				}
+				if(!flag){
+					flagflag=false;break;
+				}else{
+					vector<int> dp(val.size());
+					int k=0;
+					int vv=0;
+					for(int i=1;i<val.size();i++){
+						if(!val[i]){ 
+							dp[i]=0;
+							if(vv==0){
+								vv=dp[i-1];
+							}
+						}
+						else dp[i]=dp[i-1]+1;
+						k=max(k,dp[i]);
+					}
+					if(val[1]==1&&val[val.size()-1]==1){
+						k=max(k,dp[val.size()-1]+vv);
+					}
+					ans=max(ans,k);
+				}
+			}
+		}
+		if(!flagflag) ans=-1;
+		cout<<ans<<endl;
+	}
 	return 0;
 }
