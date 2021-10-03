@@ -1,6 +1,6 @@
-// Problem: G. Minimal Coverage
-// Contest: Codeforces - Codeforces Round #744 (Div. 3)
-// URL: https://codeforces.com/contest/1579/problem/G
+// Problem: A. Gamer Hemose
+// Contest: Codeforces - Codeforces Round #746 (Div. 2)
+// URL: https://codeforces.com/contest/1592/problem/0
 // Memory Limit: 256 MB
 // Time Limit: 1000 ms
 // 
@@ -24,30 +24,31 @@ int main()
 	int t;
 	cin>>t;
 	while(t--){
-		int n;
-		cin>>n;
+		int n,m;
+		cin>>n>>m;
 		vector<int> a(n+1);
 		for(int i=1;i<=n;i++) cin>>a[i];
-		vector<int> dp(2001,int_inf);
-		dp[0]=0;
-		for(int i=1;i<=n;i++){
-			vector<int> temp(2001,int_inf);
-			for(int j=0;j<=2000;j++){
-				int k1=j-a[i],k2=j+a[i];
-				if(k1<0){
-					temp[0]=min(temp[0],dp[j]+(-k1));
-				}else{
-					temp[k1]=min(temp[k1],dp[j]);
-				}
-				if(k2<=2000){
-					temp[k2]=max(k2,dp[j]);
+		if(n==1){
+			n++;
+			a.push_back(a[1]);
+		}
+		sort(a.begin()+1,a.end());
+		int ans=0;
+		if(m<=a[n]){
+			ans=1;
+		}else{
+			if(m<=a[n]+a[n-1]){
+				ans=2;
+			}else{
+				ll sum=a[n]+a[n-1];
+				ll k=m/sum;
+				ans=k*2;
+				m-=k*sum;
+				if(m>0){
+					if(m>a[n]) ans++;
+					ans++;
 				}
 			}
-			dp=temp;
-		}
-		int ans=int_inf;
-		for(int i=0;i<=2000;i++){
-			ans=min(ans,dp[i]);
 		}
 		cout<<ans<<endl;
 	}
