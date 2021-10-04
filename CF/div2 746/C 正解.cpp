@@ -17,7 +17,6 @@ typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
 const int max_n=1e5+5;
-ll val[max_n];
 int head[max_n],to[max_n<<1],nxt[max_n<<1],tot=1;
 inline void add(int a,int b){
 	to[++tot]=b;
@@ -25,57 +24,24 @@ inline void add(int a,int b){
 	head[a]=tot;
 	return ;
 }
-ll xorsum=0;
-ll sum[max_n],topsum[max_n];
-void dfs(int a,int pa)
-{
-	ll v=val[a];
-	for(int i=head[a];i;i=nxt[i]){
-		int &u=to[i];
-		if(u!=pa){
-			dfs(u,a);
-			v^=sum[u];
-		}
-	}
-	sum[a]=v;
-	topsum[a]=xorsum^v^val[a];
-	return ;
-}
-bool flag[max_n],topflag[max_n];
-void dfs1(int a,int pa)
-{
-	for(int i=head[a];i;i=nxt[i]){
-		int &u=to[i];
-		if(u!=pa){
-			dfs1(u,a);
-			if(!flag[a]) flag[a]=flag[u];
-		}
-	}
-	if(!flag[a]) flag[a]=(sum[a]==xorsum);
-	
-	return ;
-}
+int val[max_n];
+int xorsum;
 bool ans;
-void dfs2(int a,int pa,bool ok)
+int cnt;
+int dfs(int a,int pa)
 {
-	if(!ok){
-		ok=(topsum[a]==xorsum);
-	}
-	int cnt=0;
+	int v=val[a];
 	for(int i=head[a];i;i=nxt[i]){
 		int &u=to[i];
 		if(u!=pa){
-			dfs2(u,a,ok);
-			if(flag[u]) cnt++;
-			if((xorsum^sum[u])==xorsum&&flag[u]){
-				ans=true;
-			}
+			v^=dfs(u,a);
 		}
 	}
-	if(cnt>=2){
-		ans=true;
+	if(v==xorsum){
+		v=0;
+		cnt++;
 	}
-	return ;
+	return v;
 }
 int main()
 {
@@ -86,11 +52,12 @@ int main()
 	while(t--){
 		int n,k;
 		cin>>n>>k;
+		
 		xorsum=0;
 		for(int i=1;i<=n;i++){
 			cin>>val[i];
-			head[i]=0;
 			xorsum^=val[i];
+			head[i]=0;
 		}
 		tot=1;
 		for(int i=1;i<n;i++){
@@ -99,30 +66,14 @@ int main()
 			add(a,b);
 			add(b,a);
 		}
-		
 		ans=false;
-		memset(sum,0,sizeof(ll)*(n+2));
-		memset(topsum,0,sizeof(ll)*(n+2));
-		memset(flag,0,sizeof(bool)*(n+2));
-		memset(topflag,0,sizeof(bool)*(n+2));
-
-		dfs(1,-1);
-		dfs1(1,-1);
-		//cout<<"u"<<endl;
 		if(xorsum==0){
 			ans=true;
 		}else{
 			if(k!=2){
-				int cnt=0;
-				for(int i=head[1];i;i=nxt[i]){
-					int &u=to[i];
-					dfs2(u,1,(xorsum^sum[u])==xorsum);
-					if(flag[u]) cnt++;
-					if((xorsum^sum[u])==xorsum&&flag[u]) ans=true;
-				}
-				if(cnt>=2){
-					ans=true;
-				}
+				cnt=0;
+				dfs(1,0);
+				ans=(cnt>=3?true:false);
 			}
 		}
 		cout<<(ans?"YES":"NO")<<endl;
