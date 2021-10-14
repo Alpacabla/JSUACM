@@ -3,7 +3,7 @@
 // URL: https://codeforces.com/contest/1594/problem/E2
 // Memory Limit: 256 MB
 // Time Limit: 3000 ms
-// 
+//
 // Powered by CP Editor (https://cpeditor.org)
 
 #include<bits/stdc++.h>
@@ -11,7 +11,7 @@
 #define to_r(a) ((a)<<1|1)
 #define lowbit(a) ((a)&(-a))
 using namespace std;
-#define endl '\n'
+//#define endl '\n'
 typedef long long int ll;
 typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
@@ -51,74 +51,84 @@ int main()
 			}
 		}
 	}
-	ll ans=0;
-	for(int i=0;i<6;i++){
-		ans=(ans+dp[k][i])%mod;
-	}
 	ll lim=(1<<(k-1));
 	int n;
 	cin>>n;
-	map<ll,int> mp;
-	queue<ll> q;
-	//queue<pair<ll,int> > q;
+	vector<pair<ll,int> > col;
 	for(int i=0;i<n;i++){
 		ll v;
 		string s;
 		cin>>v>>s;
 		int vv;
 		switch(s[0]){
-			case 'w': vv=1;break;
+			case 'w': vv=0;break;
 			case 'y': vv=1;break;
 			case 'g': vv=2;break;
-			case 'b': vv=2;break;
+			case 'b': vv=3;break;
 			case 'r': vv=4;break;
-			case 'o': vv=4;break;
+			case 'o': vv=5;break;
 		}
-		mp[v]=vv;
-		q.push(v);
+		col.push_back({v,vv});
 	}
-	set<int> sets;
-	bool flag=true;
-	while(q.size()&&flag){
-		ll a=q.front();
-		cout<<a<<endl;
-		q.pop();
-		if(sets.count(a)) continue;
-		sets.insert(a);
-		if(mp[a]==5||mp[a]==3||mp[a]==6){
-			continue;
-		}
-		if(a!=1){
-			if(!mp.count(a/2)){
-				mp[a/2]=7;
+	map<ll,vector<ll> > last;
+	for(int i=k;i>=1;i--){
+		map<ll,vector<ll> >temp;
+		
+		for(auto &[a,b]:last){
+			if(!temp.count(a/2)){
+				vector<ll> vec(6);
+				temp[a/2]=vec;
 			}
-			mp[a/2]=mp[a/2]^mp[a];
-			if(mp[a/2]==0) flag=false; 
-			q.push(a/2);
 		}
-		if(a<lim){
-			if(!mp.count(a*2)){
-				mp[a*2]=7;
+		for(auto &[a,b]:temp){
+			vector<ll> le,r;
+			if(last.count(a*2)) le=last[a*2];
+			else{
+				le.resize(6);
+				for(int j=0;j<6;j++){
+					le[j]=dp[k-i][j];
+				}
 			}
-			mp[a*2]=mp[a*2]^mp[a];
-			if(mp[a*2]==0) flag=false; 
-			q.push(a*2);
+			if(last.count(a*2+1)) r=last[a*2+1];
+			else{
+				r.resize(6);
+				for(int j=0;j<6;j++){
+					r[j]=dp[k-i][j];
+				}
+			}
 			
-			if(!mp.count(a*2+1)){
-				mp[a*2+1]=7;
+			for(int j=0;j<6;j++){
+				for(int o=0;o<6;o++){
+					for(int l=0;l<6;l++){
+						if(j!=o&&kk[j]!=o&&j!=l&&kk[j]!=l){
+							b[j]+=(le[o]*r[l])%mod;
+							b[j]%=mod;
+						}
+					}
+				}
 			}
-			mp[a*2+1]=mp[a*2+1]^mp[a];
-			if(mp[a*2+1]==0) flag=false; 
-			q.push(a*2+1);
+		}
+		last=temp;
+		for(auto &[a,b]:col){
+			if(a>=(1ll<<(i-1))&&a<(1ll<<(i))){
+		 		if(!last.count(a)){
+		 			vector<ll> vec(6);
+		 			vec[b]=dp[k-i+1][b];
+		 			last[a]=vec;
+		 		}else{
+		 			for(int j=0;j<6;j++){
+		 				if(b!=j){
+		 					last[a][j]=0;
+		 				}
+		 			}
+		 		}
+			}
 		}
 	}
-	int cnt=0;
-	for(auto [a,b]:mp){
-		if(b==5||b==3||b==6) continue;
-		else cnt++;
-		cout<<a<<" "<<b<<endl;
+	ll out=0;
+	for(int j=0;j<6;j++){
+		out=(out+last[1][j])%mod;
 	}
-	if(!flag) ans=0;
-	cout<<cnt<<endl;
+	cout<<out<<endl;
 	return 0;
 }
