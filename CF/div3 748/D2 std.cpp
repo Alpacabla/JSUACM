@@ -32,8 +32,8 @@ int solve(vector<int> &a,int k)
 	memset(vis,0,sizeof(vis));
 	tot=0;
 	
-	for(int i=2;i<=2e6;i++){
-		if(!vis[i]){
+	for(int i=2;i<=1e6;i++){
+		if(!vis[i]){                                                                                                                                                                                                                                                                                   
 			pri[tot++]=i;
 			ok[i]=true;
 		}
