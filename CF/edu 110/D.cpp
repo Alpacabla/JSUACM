@@ -11,58 +11,54 @@
 #define to_r(a) ((a)<<1|1)
 #define lowbit(a) ((a)&(-a))
 using namespace std;
+#define endl '\n'
 typedef long long int ll;
 typedef unsigned long long int ull;
 const int int_inf=0x3f3f3f3f;
 const ll ll_inf=0x3f3f3f3f3f3f3f3f;
-const int max_n=262160;
-int cnt[max_n<<2];
-char vv[max_n<<2];
-void maintain(int ind,int l,int r){
-	switch(vv[ind]){
-		case '0':
-			cnt[ind]=cnt[to_l(ind)];
-			break;
-		case '1':
-			cnt[ind]=cnt[to_r(ind)];
-			break;
-		case '?':
-			cnt[ind]=cnt[to_r(ind)]+cnt[to_l(ind)];
-			break;
-	}
-	return ;
-}
-void change(int l1,int r1,int l,int r,int ind,char val)
-{
-	if(l>r1||r<l1) return ;
-	if(l>=l1&&r<=r1){
-		vv[ind]=val;
-		maintain(ind,l,r);
-		return ;
-	}
-	int mid=(1ll*l+r)>>1;
-	change(l1,r1,l,mid,to_l(ind),val);
-	change(l1,r1,mid+1,r,to_r(ind),val);
-	maintain(ind,l,r);
-	return ;
-}
-int iil[max_n],iir[max_n];
-int cntcnt[max_n];
-int tot=0;
-string s;
-void build_tree(int l,int r,int ind,int x)
+const int max_n=(1<<21)+5;
+int sum[max_n];
+int flag[max_n];
+vector<int> to[25];
+int toto[max_n];
+void build(int l,int r,int ind,int vv)
 {
 	if(l==r){
-		cnt[ind]=1;
+		sum[ind]=1;
 		return ;
 	}
-	int mid=(1ll*l+r)>>1;
-	build_tree(l,mid,to_l(ind),x>>1);
-	build_tree(mid+1,r,to_r(ind),x>>1);
-	vv[ind]=s[tot++];
-	iil[++cntcnt[x]]=l;
-	iir[cntcnt[x]]=r;
-	maintain(ind,l,r);
+	to[vv].push_back(ind);
+	int mid=(l+r)>>1;
+	build(l,mid,to_l(ind),vv-1);
+	build(mid+1,r,to_r(ind),vv-1);
+	return ;
+}
+void change(int ind,char ch)
+{
+	if(ch=='1'){
+		sum[ind]=sum[to_r(ind)];
+	}
+	if(ch=='0'){
+		sum[ind]=sum[to_l(ind)];
+	}
+	if(ch=='?'){
+		sum[ind]=sum[to_l(ind)]+sum[to_r(ind)];
+	}
+	flag[ind]=ch;
+	ind>>=1;
+	while(ind){
+		char ch=flag[ind];
+		if(ch=='1'){
+			sum[ind]=sum[to_r(ind)];
+		}
+		if(ch=='0'){
+			sum[ind]=sum[to_l(ind)];
+		}
+		if(ch=='?'){
+			sum[ind]=sum[to_l(ind)]+sum[to_r(ind)];
+		}
+		ind>>=1;
+	}
 	return ;
 }
 int main()
@@ -71,24 +67,27 @@ int main()
 	cin.tie(0);
 	int k;
 	cin>>k;
-	int lim=(1<<(k));
-	for(int i=0;i<=lim;i++){
-		cntcnt[i]=i;
-	}
-	cin>>s;
-	build_tree(1,lim,1,lim);
-	int m;
-	cin>>m;
-	while(m--){
-		int p;
-		char c;
-		cin>>p>>c;
-		if(p==5){
-			cout<<p<<endl;
-			cout<<iil[p]<<" "<<iir[p]<<endl;
+	int n=(1<<k);
+	build(1,n,1,k);
+	int tot=1;
+	for(int i=1;i<=k;i++){
+		for(int j=0;j<to[i].size();j++){
+			toto[tot++]=to[i][j];
 		}
-		change(iil[p],iir[p],1,lim,1,c);
-		cout<<cnt[1]<<endl;
+	}
+	string s;
+	cin>>s;
+	for(int i=1;i<n;i++){
+		change(toto[i],s[i-1]);
+	}
+	int q;
+	cin>>q;
+	while(q--){
+		int a;
+		char ch;
+		cin>>a>>ch;
+		change(toto[a],ch);
+		cout<<sum[1]<<endl;
 	}
 	return 0;
 }

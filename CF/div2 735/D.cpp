@@ -21,6 +21,20 @@ int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	
+	int t;
+	cin>>t;
+	while(t--){
+		int n;
+		cin>>n;
+		string s;
+		if(n%2){
+			s+='z';
+			n--;
+		}
+		for(int i=0;i<n/2;i++) s+='a';
+		if(n!=0) s+='b';
+		for(int i=0;i<n/2-1;i++) s+='a';
+		cout<<s<<endl;
+	}
 	return 0;
 }

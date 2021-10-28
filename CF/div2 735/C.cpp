@@ -28,20 +28,13 @@ int main()
 		cin>>a>>b;
 		if(a>b) cout<<0<<endl;
 		else{
-			ll ans=b+a;
-			
-			while(1){
-				int res=-1;
-				for(int i=30;i>=0;i--){
-					if(ans<(1ll<<i)) continue;
-					if(((ans-(1ll<<i))^a)>b){
-						res=i;
-					}
-				}
-				if(res==-1){
-					break;
-				}
-				ans-=(1ll<<res);
+			int ans=0;
+			b++;
+			for(int i=30;i>=0;i--){
+				int v1=(a>>i)&1,v2=(b>>i)&1;
+				if(v1==v2) continue;
+				if(v1<v2) ans+=(1<<i);
+				else break;
 			}
 			cout<<ans<<endl;
 		}
