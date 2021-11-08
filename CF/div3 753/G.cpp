@@ -26,27 +26,45 @@ int main()
 	while(t--){
 		int n,m;
 		cin>>n>>m;
-		ll max1=0,min1=0;
+		vector<int> a(n+1),b(n+1);
+		vector<int> aa=a,bb=b,out1=a,out2=b;
+		ll min1=0,max1=0;
+		ll tot=0;
 		for(int i=1;i<=n;i++){
-			int x,y;
-			cin>>x>>y;
-			int t1,t2;
-			//t1=x,t2=y;
-			t1=max(0,x-m);
-			t2=y-(m-(x-t1));
-			int d=t2-t1;
-			max1+=d;
-			t1=max(0,y-m);
-			t2=x-(m-(y-t1));
-			d=t2-t1;
-			min1-=d;
-			if(max1<min1){
-				cout<<"u"<<endl;
-			}
+			cin>>a[i]>>b[i];
+			
+			aa[i]=max(0,a[i]-m);
+			bb[i]=b[i]-(m-(a[i]-aa[i]));
+			tot+=a[i]+b[i]-m;
+			min1+=max(0,a[i]-m);
+			int temp=max(0,b[i]-m);
+			temp=a[i]-(m-(b[i]-temp));
+			max1+=temp;
 		}
-		if(min1<0&&max1>0) cout<<0<<endl;
-		else{
-			cout<<min(abs(min1),abs(max1))<<endl;
+		
+		ll d=tot-2*min1;
+		ll sum1=0,sum2=0;
+		for(int i=1;i<=n;i++){
+			if(d>=2){
+				ll dd=a[i]-aa[i];
+				ll v=min(d/2,dd);
+				int temp=aa[i];
+				bb[i]-=v;
+				aa[i]+=v;
+				if(bb[i]<0){
+					aa[i]+=bb[i];
+					bb[i]=0;
+				}
+				d-=2*(aa[i]-temp);
+				
+			}
+			sum1+=aa[i],sum2+=bb[i];
+			out1[i]=a[i]-aa[i],out2[i]=b[i]-bb[i];
+		}
+		
+		cout<<abs(sum1-sum2)<<endl;
+		for(int i=1;i<=n;i++){
+			cout<<out1[i]<<" "<<out2[i]<<endl;
 		}
 	}
 	return 0;
